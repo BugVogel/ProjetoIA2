@@ -7,12 +7,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="robo.js"></script>
     <script src="environment.js"></script>
-    
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 </head>
 <body>
         <script>
 
+            /* 
+                3 1 1 1
+                0 0 0 1
+                0 0 0 1
+                0 0 0 5
+            */  
 
+            var maze = [[1,1,1,1],[0,0,0,1],[0,0,0,1],[0,0,0,3]];
+            var maxInterations = 100;
+            
+            var environment = new Environment(maze,200,0,0); //passa labirinto e população inicial
+            environment.generateInitialPopulation(); //gera primeira população
+
+            for(var i=0; i<15; i++){
+
+                environment.selectSurvivors();
+                console.log(environment.getBestFitAfterSelectSurvivors());
+                environment.newGeneration();
+
+            }
               
                 
 
