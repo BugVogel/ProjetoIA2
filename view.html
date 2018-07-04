@@ -13,19 +13,25 @@
         <script>
 
             /* 
-                3 1 1 1
-                0 0 0 1
-                0 0 0 1
-                0 0 0 5
+                5 1 1 1 1 1 1 1 1
+                0 0 1 0 1 0 0 0 1
+                0 0 1 0 1 1 1 1 1
+                1 0 1 0 1 0 0 0 0
+                1 0 1 0 1 0 0 0 0
+                1 1 1 0 1 1 1 0 0
+                0 0 1 0 0 0 1 0 0
+                0 0 1 0 1 0 1 1 3 
+                0 0 1 0 1 1 1 0 0
             */  
 
-            var maze = [[1,1,1,1],[0,0,0,1],[0,0,0,1],[0,0,0,3]];
+            var maze = [[1,1,1,1,1,1,1,1,1],[0,0,1,0,1,0,0,0,1],[0,0,1,0,1,1,1,1,1],[1,0,1,0,1,0,0,0,0],[1,0,1,0,1,0,0,0,0],[1,1,1,0,1,1,1,0,0],[0,0,1,0,0,0,1,0,0],
+            [0,0,1,0,1,0,1,1,3], [0,0,1,0,1,1,1,0,0]];
             var maxInterations = 100;
             
             var environment = new Environment(maze,200,0,0); //passa labirinto e população inicial
             environment.generateInitialPopulation(); //gera primeira população
 
-            for(var i=0; i<15; i++){
+            for(var i=0; i<1000; i++){
 
                 environment.selectSurvivors();
                 console.log(environment.getBestFitAfterSelectSurvivors());

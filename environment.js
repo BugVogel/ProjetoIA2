@@ -15,9 +15,6 @@ var Environment = function(maze, initialPopulationSize , x,y){
     this.y = y;
     this.bestFit = Infinity;
     
-
-
-
 } 
 
 function sleep(milliseconds) {
@@ -34,23 +31,14 @@ function sleep(milliseconds) {
 Environment.prototype.generateInitialPopulation = function(){
 //Chama o metodo de gerar mapa aleatorio do robo
 
-
+	 this.generation_counter++;
+	   
     for(var i =0; i<this.initialPopulationSize; i++){
         
-     
-        var robot = new Robot(this.x,this.y, this.maze);
-        this.generation_counter++;             
+        var robot = new Robot(this.x,this.y, this.maze);           
         this.robots.push(robot);
         
-  
     }
-
-
-
-
-
-   
-    
 
 }
 
@@ -71,14 +59,16 @@ Environment.prototype.newGeneration = function(survivors){
 //Ou podemos usar a roleta
 
 
-   
+   this.generation_counter++;
+   console.log(this.generation_counter);
+
 
     for(var i=0; i<this.survivors.length; i++){
         for(var j=0; j<this.survivors.length; j++){
 
             if(this.survivors[i] != this.survivors[j]) {//se não for ele mesmo
                 
-                var child = this.survivors[i].generatChild(this.survivors[j], this.survivorsChildren); //Gera filho e adiciona no array de filhos
+                var child = this.survivors[i].generatChild(this.survivors[j]); //Gera filho e adiciona no array de filhos
                 this.survivorsChildren.push(child);
                 
             }
@@ -100,7 +90,10 @@ Environment.prototype.newGeneration = function(survivors){
       
     }
 
+	 this.robots = [];
     this.robots = this.survivorsChildren;
+    this.survivorsChildren = [];
+    this.survivors = [];
 
     
     
@@ -133,6 +126,7 @@ Environment.prototype.selectSurvivors = function(){
     }
 
     this.bestFit = this.survivors[0].getFitness();
+    console.log(this.survivors[0]);
 
 
 

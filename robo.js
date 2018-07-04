@@ -59,9 +59,11 @@ Robot.prototype.calcFitness = function(){
 
     this.fitness = 0; //zera pois ele vai recalcular do ponto inicial novamente
     var currentPosition = [this.initialPosition[0], this.initialPosition[1]];
-    var visitedPositions = [[currentPosition]];
-
-
+    var visitedPositionsX = [];
+    var visitedPositionsY = [];
+    
+	 visitedPositionsX.push(this.initialPosition[0]);
+	 visitedPositionsY.push(this.initialPosition[1]);
 
   
     for(var i=0; i<this.path.length; i++){
@@ -95,12 +97,12 @@ Robot.prototype.calcFitness = function(){
             this.fitness = this.fitness + 50;
             return;
         }
-        else if(this.verifyLoop(currentPosition, visitedPositions)){
+        else if(this.verifyLoop(currentPosition, visitedPositionsX, visitedPositionsY)){
             this.fitness = this.fitness + 30;
             return;
         }
         else if(this.maze[currentPosition[0]][currentPosition[1]] == 3){ //chegou ao fim do labirinto
-            this.fitness =0;
+            this.fitness = this.fitness - 1000;
             return;
         }
         else{
@@ -108,7 +110,8 @@ Robot.prototype.calcFitness = function(){
         }
 
 
-        visitedPositions.push(currentPosition);
+        visitedPositionsX.push(currentPosition[0]);
+        visitedPositionsY.push(currentPosition[1])
 
     }
     
@@ -122,11 +125,12 @@ Robot.prototype.calcFitness = function(){
 
 
 
-Robot.prototype.verifyLoop = function(currentPosition, visitedPositions){
+Robot.prototype.verifyLoop = function(currentPosition, visitedPositionsX, visitedPositionsY){
 
-    for(var i = 0; i<visitedPositions.length; i++){
-        var comparablePosition = visitedPositions[i];
-        if(currentPosition[0] == comparablePosition[0] && currentPosition[1] == comparablePosition[1]){
+    for(var i = 0; i<visitedPositionsX.length; i++){
+        var comparablePositionX = visitedPositionsX[i];
+        var comparablePositionY = visitedPositionsY[i];
+        if(currentPosition[0] == comparablePositionX && currentPosition[1] == comparablePositionY){
             return true;
         }
     }
@@ -169,19 +173,36 @@ Robot.prototype.mutate = function(){
 //Sortear um espaço vazio que nao seja parede e trocar por um aleatorio
 
 
-    var mutateDecision = Math.floor(Math.random() *2);
+   var mutateDecision = Math.floor(Math.random()*20);
     
+	if(mutateDecision == 1){
+		//5% de chance de acrescentar uma posição
+		var direction = this.generateTwoMult();
+		this.path.push(direction);	
+	}
+	else if(mutateDecision == 2){
+		this.path.pop();	
+	}
+	else if(mutateDecision >= 3 && mutateDecision <=5){
+		var pos_mut = Math.floor(Math.random()*(this.path.length));
+		this.path[pos_mut] = this.generateTwoMult();
+	}
+	
+   
+    
+    //if(this.path.length == 1 || mutateDecision == 1 ){ //Se tiver somente uma direção adiciona, ou se for sorteado
 
-    if(this.path.length == 1 || mutateDecision == 1 ){ //Se tiver somente uma direção adiciona, ou se for sorteado
-
-        var direction = this.generateTwoMult();
-        this.path.push(direction);
+      //  var direction = this.generateTwoMult();
+      //  this.path.push(direction);
         
-    }
-    else{
-        this.path.pop();
+    //}
+    //else if(mutateDecision == 0){
+        //this.path.pop();
 
-    }
+    //}
+    //else{
+    	//do nothing
+    //}
 
 
     
@@ -216,7 +237,7 @@ Robot.prototype.generatChild = function(partner){
     }
     else{ //Adiciona um novo passo(gene) retirado do pai
 
-        pathChild.push(this.path[positionModified]);
+        //pathChild.push(this.path[positionModified]);
 
     }
 
