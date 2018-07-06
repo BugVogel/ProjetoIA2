@@ -127,7 +127,7 @@ Environment.prototype.selectSurvivors = function(){
 
    
 
-    for(var i=0; i<20; i++){ //seleciona os 20 melhores para sobreviver
+    for(var i=0; i<100; i++){ //seleciona os 100 dos melhores para sobreviver
 
         this.survivors.push(this.robots[i]);
         //console.log(this.survivors[i]);    

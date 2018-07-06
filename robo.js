@@ -178,19 +178,21 @@ Robot.prototype.mutate = function(){
 
    var mutateDecision = Math.floor(Math.random()*20);
     
-	if(mutateDecision == 1){
+	if(mutateDecision >= 5 && mutateDecision <= 5){
 		//5% de chance de acrescentar uma posição
 		var direction = this.generateTwoMult();
 		this.path.push(direction);	
 	}
-	else if(mutateDecision == 2){
+	else if(mutateDecision >= 7 && mutateDecision <= 7){
 		this.path.pop();	
     }
 	else if(mutateDecision >= 3 && mutateDecision <=4){
-		var pos_mut = Math.floor(Math.random()*(this.path.length));
+		
+		var pos_mut = Math.floor(Math.random()*(this.path.length*0.3) + this.path.length*0.7 ); //muta somente os ultimos passos
 		this.path[pos_mut] = this.generateTwoMult();
+		
 	}
-	
+
    
     
     //if(this.path.length == 1 || mutateDecision == 1 ){ //Se tiver somente uma direção adiciona, ou se for sorteado
