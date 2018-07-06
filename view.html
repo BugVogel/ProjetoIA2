@@ -10,10 +10,59 @@
     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 </head>
 <body>
+
+
+        <div id="mazeArea">
+            
+        </div>
+
+
+
+
         <script>
 
+            
+
+            
+
             /* 
-                5 1 1 1 1 1 1 1 1
+
+
+                Labirinto 1
+                1 1 1 1 1 1 1 1 1
+                0 0 0 0 0 0 0 0 1
+                0 0 0 0 0 0 0 0 1
+                0 0 0 0 0 0 0 0 1
+                0 0 0 0 0 0 0 0 1
+                0 0 0 0 0 0 0 0 1
+                0 0 0 0 0 0 0 0 1
+                0 0 0 0 0 0 0 0 1
+                0 0 0 0 0 0 0 0 3
+
+            */   
+            //var maze = [[1,1,1,1,1,1,1,1,1],[0,0,0,0,0,0,0,0,1],[0,0,0,0,0,0,0,0,1],[0,0,0,0,0,0,0,0,1],[0,0,0,0,0,0,0,0,1],[0,0,0,0,0,0,0,0,1],[0,0,0,0,0,0,0,0,1],
+            //[0,0,0,0,0,0,0,0,1], [0,0,0,0,0,0,0,0,3]];
+
+            
+            /*
+                Labirinto 2
+                1 1 1 1 1 1 1 0 0
+                0 0 0 1 0 0 1 0 0
+                0 0 0 1 0 0 1 1 0
+                0 0 0 1 0 0 0 1 1
+                0 0 0 1 0 0 0 0 1
+                0 0 0 1 0 0 1 1 1
+                0 0 0 1 0 0 1 0 0
+                0 0 0 1 3 1 1 0 0
+                0 0 0 0 0 0 0 0 0
+
+            */
+            var maze = [[1,1,1,1,1,1,1,0,0],[0,0,0,1,0,0,1,0,0],[0,0,0,1,0,0,1,1,0],[0,0,0,1,0,0,0,1,1],[0,0,0,1,0,0,0,0,1],[0,0,0,1,0,0,1,1,1],[0,0,0,1,0,0,1,0,0],
+            [0,0,0,1,3,1,1,0,0], [0,0,0,0,0,0,0,0,0]];
+            
+            /*
+                Labirinto 3
+                1 1 1 1 1 1 1 1 1
                 0 0 1 0 1 0 0 0 1
                 0 0 1 0 1 1 1 1 1
                 1 0 1 0 1 0 0 0 0
@@ -22,20 +71,53 @@
                 0 0 1 0 0 0 1 0 0
                 0 0 1 0 1 0 1 1 3 
                 0 0 1 0 1 1 1 0 0
+
+                
             */  
 
-            var maze = [[1,1,1,1,1,1,1,1,1],[0,0,1,0,1,0,0,0,1],[0,0,1,0,1,1,1,1,1],[1,0,1,0,1,0,0,0,0],[1,0,1,0,1,0,0,0,0],[1,1,1,0,1,1,1,0,0],[0,0,1,0,0,0,1,0,0],
-            [0,0,1,0,1,0,1,1,3], [0,0,1,0,1,1,1,0,0]];
-            var maxInterations = 100;
+            //var maze = [[1,1,1,1,1,1,1,1,1],[0,0,1,0,1,0,0,0,1],[0,0,1,0,1,1,1,1,1],[1,0,1,0,1,0,0,0,0],[1,0,1,0,1,0,0,0,0],[1,1,1,0,1,1,1,0,0],[0,0,1,0,0,0,1,0,0],
+            //[0,0,1,0,1,0,1,1,3], [0,0,1,0,1,1,1,0,0]];
+            var maxInterations =500;
+
+
+        
             
             var environment = new Environment(maze,200,0,0); //passa labirinto e população inicial
             environment.generateInitialPopulation(); //gera primeira população
+            var maxFitStatic = 50; //máximo de gerações com fitness estático
+            var contFitStatic =0;
+            var lastFit=0;
 
-            for(var i=0; i<1000; i++){
 
+
+            for(var i=0; i<maxInterations ; i++){
+
+               
                 environment.selectSurvivors();
-                console.log(environment.getBestFitAfterSelectSurvivors());
+                var currentFit = environment.getBestFitAfterSelectSurvivors();
+                console.log('-----------------------------------');
+                console.log("Melhor fitness da geração:" + currentFit);
+                console.log("Média de fitnes da geração:" + environment.getAverageFitnessAfterSelectSurvivors());
+                console.log("Geração número:" + environment.getGenerationCounter());
+                console.log('-------------------------------------------');
+
+                if(currentFit <= -1000){
+                    break;
+                }
+
+                if(lastFit == currentFit){
+                    contFitStatic++;
+                }
+                else{
+                    contFitStatic =0;
+                }
+                lastFit = currentFit;
                 environment.newGeneration();
+
+                if(contFitStatic >= maxFitStatic){ //Bateu o numero máximo de gerações sem mudar o fitness
+                    environment.generateInitialPopulation();//Extinção  e começa uma nova geração
+                }
+
 
             }
               

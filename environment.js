@@ -28,10 +28,19 @@ function sleep(milliseconds) {
 }
 
 
+Environment.prototype.getGenerationCounter = function(){
+    return this.generation_counter;
+}
+
+
 Environment.prototype.generateInitialPopulation = function(){
 //Chama o metodo de gerar mapa aleatorio do robo
 
-	 this.generation_counter++;
+    
+    this.generation_counter++;
+    this.robots = [];
+    this.survivors = [];
+    this.survivorsChildren = []; 
 	   
     for(var i =0; i<this.initialPopulationSize; i++){
         
@@ -60,7 +69,7 @@ Environment.prototype.newGeneration = function(survivors){
 
 
    this.generation_counter++;
-   console.log(this.generation_counter);
+  
 
 
     for(var i=0; i<this.survivors.length; i++){

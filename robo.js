@@ -88,6 +88,7 @@ Robot.prototype.calcFitness = function(){
 
         }
 
+       
         //Verificar quanto de fitness aplicar
         if( currentPosition[0] <0 || currentPosition[1] <0 || currentPosition[0] >= this.maze.length || currentPosition[1] >= this.maze[0].length ){
             this.fitness = this.fitness + 50;
@@ -108,6 +109,8 @@ Robot.prototype.calcFitness = function(){
         else{
             this.fitness = this.fitness - 5;
         }
+
+
 
 
         visitedPositionsX.push(currentPosition[0]);
@@ -182,8 +185,8 @@ Robot.prototype.mutate = function(){
 	}
 	else if(mutateDecision == 2){
 		this.path.pop();	
-	}
-	else if(mutateDecision >= 3 && mutateDecision <=5){
+    }
+	else if(mutateDecision >= 3 && mutateDecision <=4){
 		var pos_mut = Math.floor(Math.random()*(this.path.length));
 		this.path[pos_mut] = this.generateTwoMult();
 	}
